@@ -94,15 +94,18 @@ def web_scrapper():
     return print(df)
 
 def full_web_page_scrapper():
-    
-    url = 'https://pubmed.ncbi.nlm.nih.gov/trending/'
-    page = bs(urlopen(url), "html.parser")
     page_ids = []
-    full_page = page.find("div",{"class":"search-results-chunk results-chunk"})
-    for id in full_page['data-chunk-ids'].split(','):
-        page_ids.append(id)
-    print(page_ids)
+    for id in range(1,11):
+        url = 'https://pubmed.ncbi.nlm.nih.gov/trending/?page={}'.format(id)
+        
+        page = bs(urlopen(url), "html.parser")
+        
+        full_page = page.find("div",{"class":"search-results-chunk results-chunk"})
+        for id in full_page['data-chunk-ids'].split(','):
+            page_ids.append(id)
+    
     
     return page_ids
+
 
 web_scrapper()
