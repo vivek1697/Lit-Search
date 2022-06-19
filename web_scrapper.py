@@ -40,7 +40,7 @@ def web_scrapper():
         try:
             mesh_terms = article_details.find("div", {"id":"mesh-terms"}).text.strip()
         except:
-            mesh_terms = None
+            mesh_terms = []
         available_mesh_terms = []
         if mesh_terms:
             
@@ -48,14 +48,48 @@ def web_scrapper():
                 if term.strip():
                     if term != 'MeSH terms':
                         available_mesh_terms.append(term.strip())
-        new_df = pd.DataFrame({
-            'Date': date,
-            'heading': heading,
-            'journal': journal,
-            'abstract': abstract,
-            'Mesh-terms' : [available_mesh_terms]
-        })
-        df = pd.concat([df, new_df])   
+            
+            new_df = pd.DataFrame({
+                'Date': date,
+                'heading': heading,
+                'journal': journal,
+                'abstract': abstract,
+                'Mesh-terms' : available_mesh_terms
+            })
+        else:
+            new_df = pd.DataFrame({
+                'Date': date,
+                'heading': heading,
+                'journal': journal,
+                'abstract': abstract,
+                'Mesh-terms' : None
+                }, index=[0])
+            
+        
+        df = pd.concat([df, new_df])
+    records = df.to_records(index=False)
+    list_of_tuples = list(records)
+    # print(list_of_tuples)   
+        
+    import sqlite3
+    conn = sqlite3.connect('Article.db')
+
+    c = conn.cursor()
+
+    # Create table
+    c.execute('''Drop TABLE articles''')
+    c.execute('''CREATE TABLE articles
+            (Date, heading, journal, abstract, mesh_terms)''')
+    
+    # Insert a row of data
+    c.executemany('INSERT INTO articles VALUES (?,?,?,?,?)', list_of_tuples)
+    # Save (commit) the changes
+    conn.commit()
+    
+    i = 0
+    for row in c.execute('SELECT * FROM articles'):
+        print(i , row)
+        i += 1
     
     return print(df)
 
