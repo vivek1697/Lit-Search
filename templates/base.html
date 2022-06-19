@@ -12,16 +12,23 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <a class="navbar-brand" href="{{ url_for('index')}}">FlaskBlog</a>
+        <a class="navbar-brand" href="{{ url_for('index')}}">Lit Search</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" href="{{ url_for('about')}}">About</a>
             </li>
             </ul>
+        </div>
+        <div>
+          <form method='POST' action="{{ url_for('search') }}" class="form-inline">
+            {{ form.hidden_tag() }}
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search", name="searched">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit", name="Search">Search</button>
+          </form>
         </div>
     </nav>
     <div class="container">

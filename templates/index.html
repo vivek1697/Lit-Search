@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Welcome to FlaskBlog {% endblock %}</h1>
+    <h1>{% block title %} Welcome to Lit Search Application {% endblock %}</h1>
+    {% for article in articles %}
+    <a href="#">
+        <h2>{{ article['mesh-terms'] }}</h2>
+    </a>
+    <span class="badge badge-primary">{{ article['date'] }}</span>
+    <span class="badge badge-secondary">{{ article['mesh-terms'] }}</span>
+    <hr>
+    {% endfor %}
 {% endblock %}

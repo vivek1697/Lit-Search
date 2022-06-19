@@ -77,17 +77,17 @@ def web_scrapper():
     c = conn.cursor()
 
     # Create table
-    c.execute('''Drop TABLE articles''')
-    c.execute('''CREATE TABLE articles
-            (Date, heading, journal, abstract, mesh_terms)''')
+    c.execute('''Drop TABLE Article''')
+    c.execute('''CREATE TABLE Article
+            (date, heading, journal, abstract, mesh_terms)''')
     
     # Insert a row of data
-    c.executemany('INSERT INTO articles VALUES (?,?,?,?,?)', list_of_tuples)
+    c.executemany('INSERT INTO Article VALUES (?,?,?,?,?)', list_of_tuples)
     # Save (commit) the changes
     conn.commit()
     
     i = 0
-    for row in c.execute('SELECT * FROM articles'):
+    for row in c.execute('SELECT * FROM Article'):
         print(i , row)
         i += 1
     
